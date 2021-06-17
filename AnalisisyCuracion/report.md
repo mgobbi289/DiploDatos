@@ -1,4 +1,4 @@
-## Criterios de exclusión de ejemplos
+## Criterios de exclusión
   1. Se eliminan variables que poseen un gran porcentaje de nulos, como BuildingArea y YearBuilt.
   2. Eliminamos variables que no poseen informacion util como Address, Bedroom2
   3. Eliminamos registros que estan por encima del 97.5 y debajo del 2.5 con respecto a la variable Price.
@@ -16,18 +16,18 @@
   La última categoría tiene muy pocos valores, pero no se puede agrupar con ningún otra ya que es la única.
 - `Regionname` Región general de la propiedad.
   Se pueden separar en dos zonas, y ya que la zona de **Victoria** posee muy pocos datos, serán agrupados en una única categoría.
-- `CouncilArea` Departamento (o algo similar a lo que entendemos).
+- `CouncilArea` Departamento (o algo similar a lo que entendemos).  
   La variable tiene valores NaNs, que serán resueltos luego de aplicar un *merge*.
   Hay departamentos con una cantidad menor a 10 propiedades, los cuales se podrían agrupar luego de imputar los valores faltantes.
-- `Date` Fecha de venta de la propiedad.
+- `Date` Fecha de venta de la propiedad.  
   La variable no aporta demasiada información, ya que una fecha exacta no es tan informativa como un perído de tiempo.
   Se requiere de un procesamiento adicional de la variable, para poder separar las fechas en trimestres (en lugar de días).
-- `SellerG` Vendedor de la propiedad.
+- `SellerG` Vendedor de la propiedad.  
   En total hay 268 vendedores distintos en el conjunto de datos, de los cuales 78 solo han vendido una única propiedad.
   Estos valores son candidatos a ser agrupados en una única categoría.
-- `bnb_city_mode` Ciudad de la propiedad
+- `bnb_city_mode` Ciudad de la propiedad  
    Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge, y realizar la operacion Moda
-- `bnb_suburb_mode` Barrio de la residencia
+- `bnb_suburb_mode` Barrio de la residencia  
    Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge, y realizar la operacion Moda 
 
   ### Características numéricas
@@ -53,16 +53,16 @@
   La variable tiene 0s, pero serán considerados normales ya que es razonable tener una propiedad sin cochera.
   La variable tiene NaNs, los cuales serán imputados por el valor constante 0.
   Si fuese una variable categórica, se podrían agrupar todas las propiedades con 5 o más cocheras.
-- `Landsize` Tamaño del Terreno.
+- `Landsize` Tamaño del Terreno.  
   La variable tiene 0s, que asumiremos normales ya que no todas las propiedades pueden tener patios.
   La *media* es aproximadamente 550.
-- `zipcode` Codigo postal. 
+- `zipcode` Codigo postal.  
   Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge
 - `bnb_price_mean` Precio promedio de la propiedad
   Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge
-- `bnb_latitude_mean` Latitud promedio de ubicación
-  Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge
-- `bnb_longitude_mean` Longitud promedio de ubicacion
+- `bnb_latitude_mean` Latitud promedio de ubicación  
+  Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge  
+- `bnb_longitude_mean` Longitud promedio de ubicacion  
   Proviene del conjunto de datos de AirBnb luego de aplicar el metodo Merge
 
 ### Transformaciones
@@ -71,8 +71,8 @@
   3. Agrupamos la variable `RegionName` dado que la region Victoria, se encontraba desgregada (Eastern, Northern, Western).
   4. Agrupamos la variable `Date` en forma cuatrimestral.
   5. Agrupamos la variable `SellerG` donde los que que figuraban con 1 propiedad se generalizaron en Others
-  3. Las columnas `YearBuilt` y ... fueron imputadas utilizando el 
-     algoritmo ...
+  3. Las columnas `YearBuilt` y `BuildingArea` fueron imputadas utilizando el 
+     algoritmo IterativeImputer con un estimador KNeighborsRegressor
 
 ### Datos aumentados
   1. Se agregan las 5 primeras columnas obtenidas a través del
