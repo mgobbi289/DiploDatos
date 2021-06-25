@@ -6,3 +6,5 @@ plotly
 spaCy
 es_core_news_sm
 pt_core_news_sm
+unidecode
+keras
