@@ -36,7 +36,7 @@ def plot_decision_boundary(model, X, y, cPositive="dodgerblue", cNegative="tomat
 
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
-                          title='Confusion matrix',
+                          title='Confusion Matrix',
                           cmap=plt.cm.Blues):
     """
     This function prints and plots the confusion matrix.
