@@ -15,7 +15,7 @@ def train(name, model, sentences, labels, validation_set=0.2, n_epochs=5):
     return history
 
 
-def cross_validation(model, cv_split, sentences, labels, n_epochs=1):
+def cross_validation(model, filepath, cv_split, sentences, labels, n_epochs=1):
     """
     Realiza la validación cruzada de un modelo.
     """
@@ -31,6 +31,7 @@ def cross_validation(model, cv_split, sentences, labels, n_epochs=1):
         # Realizamos el entrenamiento y la evaluación.
         model.fit(X_train, y_train, epochs=n_epochs, verbose=1)
         loss, accuracy = model.evaluate(X_val, y_val, verbose=0)
+        model.load_weights(filepath)
         # Acumulamos la pérdida y la exactitud.
         splits += 1
         mean_loss += loss

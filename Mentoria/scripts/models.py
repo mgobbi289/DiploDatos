@@ -16,6 +16,9 @@ class NN_Baseline_Model():
 
       self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
+      self.filepath = f'Checkpoint/initial_weights_{self.name}.hdf5'
+      self.model.save_weights(self.filepath)
+
     def model_summary(self):
         self.model.summary()
 
@@ -36,6 +39,9 @@ class NN_Dropout_Model():
 
       self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
+      self.filepath = f'Checkpoint/initial_weights_{self.name}.hdf5'
+      self.model.save_weights(self.filepath)
+
     def model_summary(self):
         self.model.summary()
 
@@ -55,6 +61,9 @@ class NN_Batch_Model():
       self.model.add(Dense(len(classes), activation='softmax'))
 
       self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+      self.filepath = f'Checkpoint/initial_weights_{self.name}.hdf5'
+      self.model.save_weights(self.filepath)
 
     def model_summary(self):
         self.model.summary()
