@@ -1,14 +1,17 @@
+from keras.callbacks import ModelCheckpoint
 
 
-def train(model, training_data, validation_data, n_epochs=1):
+def train(name, model, sentences, labels, validation_set=0.2, n_epochs=5):
     """
     Realiza el entrenamiento de un modelo (con un conjunto de datos de validación).
     """
     # Separamos el conjunto de datos.
-    X_train, y_train = training_data
-    X_val, y_val = validation_data
-    # Realizamos el entrenamiento y la validación.
-    history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=n_epochs, verbose=1)
+    X_train, y_train = sentences, labels
+    # Definimos un checkpoint.
+    filepath = f'Checkpoint/checkpoint_{name}.hdf5'
+    checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', save_best_only=True, mode='max', verbose=0)
+    # Realizamos el entrenamiento (junto con la validación).
+    history = model.fit(X_train, y_train, validation_split=validation_set, callbacks=[checkpoint], epochs=n_epochs, verbose=1)
     return history
 
 

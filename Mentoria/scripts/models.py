@@ -4,7 +4,7 @@ from keras.layers import Dense, Flatten, Dropout, BatchNormalization
 
 class NN_Baseline_Model():
     def __init__(self, embedding_layer, classes):
-      self.name = 'Neural Network Baseline'
+      self.name = 'Neural_Network_Baseline'
 
       self.model = Sequential()
       # Definición arbitraria del modelo.
@@ -22,7 +22,7 @@ class NN_Baseline_Model():
 
 class NN_Dropout_Model():
     def __init__(self, embedding_layer, classes):
-      self.name = 'Neural Network Dropout'
+      self.name = 'Neural_Network_Dropout'
 
       self.model = Sequential()
       # Definición arbitraria del modelo.
@@ -42,7 +42,7 @@ class NN_Dropout_Model():
 
 class NN_Batch_Model():
     def __init__(self, embedding_layer, classes):
-      self.name = 'Neural Network Batch'
+      self.name = 'Neural_Network_Batch'
 
       self.model = Sequential()
       # Definición arbitraria del modelo.

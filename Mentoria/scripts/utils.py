@@ -1,6 +1,7 @@
 from re import sub
 from unidecode import unidecode
 
+
 def cleaning(title):
     """
     Aplica las operaciones de limpieza a un título de una publicación.
