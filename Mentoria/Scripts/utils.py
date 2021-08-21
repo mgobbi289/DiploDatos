@@ -19,3 +19,4 @@ def cleaning(title):
     title = sub('[^a-zA-Z ]', '', title)
     # Retornamos el título de la publicación procesado.
     return title
+

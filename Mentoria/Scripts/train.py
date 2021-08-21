@@ -1,7 +1,20 @@
 
-def cross_training(model, cv_split, sentences, labels, n_epochs=1):
+
+def train(model, training_data, validation_data, n_epochs=1):
     """
-    Realiza el entrenamiento de un modelo durante CV.
+    Realiza el entrenamiento de un modelo (con un conjunto de datos de validación).
+    """
+    # Separamos el conjunto de datos.
+    X_train, y_train = training_data
+    X_val, y_val = validation_data
+    # Realizamos el entrenamiento y la validación.
+    history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=n_epochs, verbose=1)
+    return history
+
+
+def cross_validation(model, cv_split, sentences, labels, n_epochs=1):
+    """
+    Realiza la validación cruzada de un modelo.
     """
     splits = 0
     mean_loss = 0.0
@@ -23,3 +36,4 @@ def cross_training(model, cv_split, sentences, labels, n_epochs=1):
     mean_loss /= splits
     mean_accuracy /= splits
     return mean_loss, mean_accuracy
+
