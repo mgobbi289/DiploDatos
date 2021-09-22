@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import balanced_accuracy_score
 
 
-def plot_accuracy_loss(history, name):
+def plot_accuracy_and_loss(history, name):
     """
     Gráfica las curvas de accuracy y loss para los conjuntos
     de datos de entrenamiento y validación.

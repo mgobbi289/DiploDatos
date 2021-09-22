@@ -1,7 +1,7 @@
 from keras.callbacks import ModelCheckpoint
 
 
-def train(name, model, sentences, labels, validation_set=0.2, n_epochs=5):
+def train(name, model, sentences, labels, validation_set=0.2, n_epochs=10):
     """
     Realiza el entrenamiento de un modelo (con un conjunto de datos de validación).
     """
@@ -31,6 +31,7 @@ def cross_validation(model, filepath, cv_split, sentences, labels, n_epochs=1):
         # Realizamos el entrenamiento y la evaluación.
         model.fit(X_train, y_train, epochs=n_epochs, verbose=1)
         loss, accuracy = model.evaluate(X_val, y_val, verbose=0)
+        # Reiniciamos los pesos del modelo.
         model.load_weights(filepath)
         # Acumulamos la pérdida y la exactitud.
         splits += 1
