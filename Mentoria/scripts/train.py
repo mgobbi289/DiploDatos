@@ -1,17 +1,24 @@
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 
-def train(name, model, sentences, labels, validation_set=0.2, n_epochs=10):
+def train(name, model, sentences, labels, validation_set=0.2, n_epochs=10, allow_stop=False):
     """
-    Realiza el entrenamiento de un modelo (con un conjunto de datos de validación).
+    Realiza el entrenamiento completo de un modelo (con un conjunto de datos de validación).
     """
     # Separamos el conjunto de datos.
     X_train, y_train = sentences, labels
-    # Definimos un checkpoint.
+    # Creamos la lista de CallBacks.
+    callbacks_list = []
+    # Definimos un Checkpoint.
     filepath = f'Checkpoint/checkpoint_{name}.hdf5'
-    checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', save_best_only=True, mode='max', verbose=0)
+    checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', mode='max', save_best_only=True, verbose=0)
+    callbacks_list.append(checkpoint)
+    # Definimos un Early Stopping.
+    if allow_stop:
+        early_stop = EarlyStopping(monitor='val_accuracy', mode='max', restore_best_weights=True, patience=1, verbose=1)
+        callbacks_list.append(early_stop)
     # Realizamos el entrenamiento (junto con la validación).
-    history = model.fit(X_train, y_train, validation_split=validation_set, callbacks=[checkpoint], epochs=n_epochs, verbose=1)
+    history = model.fit(X_train, y_train, validation_split=validation_set, callbacks=callbacks_list, epochs=n_epochs, verbose=1)
     return history
 
 
