@@ -1,11 +1,14 @@
 pandas
-seaborn
 numpy
+seaborn
 matplotlib
 plotly
 spaCy
 es_core_news_sm
 pt_core_news_sm
-unidecode
-keras
 glove.6B
+unidecode
+sklearn
+tensorflow
+keras
+keras_tuner
