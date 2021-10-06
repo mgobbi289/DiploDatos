@@ -12,3 +12,4 @@ sklearn
 tensorflow
 keras
 keras_tuner
+gensim
