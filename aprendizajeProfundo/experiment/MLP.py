@@ -5,7 +5,7 @@ import logging
 import mlflow
 import torch
 
-import torvh.nn as nn
+import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
