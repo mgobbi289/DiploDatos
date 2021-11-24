@@ -13,8 +13,8 @@ from torch.utils.data import DataLoader
 from sklearn.metrics import balanced_accuracy_score
 from tqdm import tqdm, trange
 
-from .dataset import MeLiChallengeDataset
 from .utils import PadSequences
+from .dataset import MeLiChallengeDataset
 
 
 logging.basicConfig(format='%(asctime)s: %(levelname)s - %(message)s', level=logging.INFO)
@@ -59,7 +59,7 @@ class CNNClassifier(nn.Module):
         self.convs = nn.ModuleList(self.convs)
         # Linear Layer
         self.fc = nn.Linear(FILTERS_COUNT * len(FILTERS_LENGTH), 128)
-        self.output = nn.Linear(128, 1)
+        self.output = nn.Linear(128, n_labels)
         self.vector_size = vector_size
 
     @staticmethod
@@ -194,13 +194,13 @@ if __name__ == '__main__':
 
         logging.info('Building classifier')
         model = CNNClassifier(
-                pretrained_embeddings_path,
-                token_to_index,
-                n_labels,
-                hidden_layers=[256, 128],
-                dropout=0.3,
-                vector_size=300,
-                freeze_embedings=True
+                pretrained_embeddings_path=args.pretrained_embeddings,
+                token_to_index=args.token_to_index,
+                n_labels=train_dataset.n_labels,
+                hidden_layers=args.hidden_layers,
+                dropout=args.dropout,
+                vector_size=args.embeddings_size,
+                freeze_embedings=True # This could be an hyperparameter
                 )
 
         # Let's send the model to the device
