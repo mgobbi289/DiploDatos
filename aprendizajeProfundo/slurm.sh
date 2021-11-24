@@ -35,3 +35,4 @@ srun -o logs/%j.out -e logs/%j.err /bin/bash `basename $1`
 cd $CWD
 
 exit 0
+
