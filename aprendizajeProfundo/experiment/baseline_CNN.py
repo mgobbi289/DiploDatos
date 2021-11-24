@@ -19,7 +19,6 @@ from .dataset import MeLiChallengeDataset
 
 logging.basicConfig(format='%(asctime)s: %(levelname)s - %(message)s', level=logging.INFO)
 
-EPOCHS = 2
 FILTERS_COUNT = 100
 FILTERS_LENGTH = [2, 3, 4]
 
@@ -29,8 +28,6 @@ class CNNClassifier(nn.Module):
                  pretrained_embeddings_path,
                  token_to_index,
                  n_labels,
-                 hidden_layers=[256, 128],
-                 dropout=0.3,
                  vector_size=300,
                  freeze_embedings=True):
         super().__init__()
@@ -71,7 +68,7 @@ class CNNClassifier(nn.Module):
         x = [self.conv_global_max_pool(x, conv) for conv in self.convs]
         x = torch.cat(x, dim=1)
         x = F.relu(self.fc(x))
-        x = torch.sigmoid(self.output(x))
+        x = self.output(x)
         return x
 
 
@@ -79,11 +76,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # Train Path
     parser.add_argument('--train-data',
-                        help='Path to the training dataset',
+                        help='Path to the training dataset.',
                         required=True)
     # Token to Index Path
     parser.add_argument('--token-to-index',
-                        help='Path to the json file that maps tokens to indices',
+                        help='Path to the json file that maps tokens to indices.',
                         required=True)
     # Pretrained Embeddings Path
     parser.add_argument('--pretrained-embeddings',
@@ -91,7 +88,7 @@ if __name__ == '__main__':
                         required=True)
     # Language
     parser.add_argument('--language',
-                        help='Language working with',
+                        help='Language working with.',
                         required=True)
     # Test Path
     parser.add_argument('--test-data',
@@ -104,21 +101,35 @@ if __name__ == '__main__':
                         default=300,
                         help='Size of the vectors.',
                         type=int)
-    # Hidden Layers
-    parser.add_argument('--hidden-layers',
-                        help='Sizes of the hidden layers of the MLP (can be one or more values)',
-                        nargs='+',
-                        default=[256, 128],
-                        type=int)
-    # Dropout
-    parser.add_argument('--dropout',
-                        help='Dropout to apply to each hidden layer',
-                        default=0.3,
-                        type=float)
     # Epochs
     parser.add_argument('--epochs',
-                        help='Number of epochs',
                         default=3,
+                        help='Number of epochs.',
+                        type=int)
+    # Batch Size
+    parser.add_argument('--batch-size',
+                        default=128,
+                        help='Size of the batch.',
+                        type=int)
+    # Freeze Embeddings
+    parser.add_argument('--freeze-embeddings',
+                        default=True,
+                        help='Freeze embeddings during training.',
+                        type=bool)
+    # Learning Rate
+    parser.add_argument('--learning-rate',
+                        default=1e-3,
+                        help='Learning rate.',
+                        type=float)
+    # Weight Decay
+    parser.add_argument('--weight-decay',
+                        default=1e-5,
+                        help='Weight decay.',
+                        type=float)
+    # Random Buffer Size
+    parser.add_argument('--random-buffer-size',
+                        default=2048,
+                        help='Size of the randomizer buffer.',
                         type=int)
 
     args = parser.parse_args()
@@ -132,11 +143,11 @@ if __name__ == '__main__':
     logging.info('Building training dataset')
     train_dataset = MeLiChallengeDataset(
         dataset_path=args.train_data,
-        random_buffer_size=2048 # This could be an hyperparameter
+        random_buffer_size=args.random_buffer_size
     )
     train_loader = DataLoader(
         train_dataset,
-        batch_size=128, # This could be an hyperparameter
+        batch_size=args.batch_size,
         shuffle=False,
         collate_fn=pad_sequences,
         drop_last=False
@@ -150,7 +161,7 @@ if __name__ == '__main__':
         )
         validation_loader = DataLoader(
             validation_dataset,
-            batch_size=128,
+            batch_size=args.batch_size,
             shuffle=False,
             collate_fn=pad_sequences,
             drop_last=False
@@ -167,7 +178,7 @@ if __name__ == '__main__':
         )
         test_loader = DataLoader(
             test_dataset,
-            batch_size=128,
+            batch_size=args.batch_size,
             shuffle=False,
             collate_fn=pad_sequences,
             drop_last=False
@@ -182,14 +193,17 @@ if __name__ == '__main__':
         logging.info('Starting experiment')
         # Log all relevent hyperparameters
         mlflow.log_params({
-            'model_type': 'CNN',
+            'model_type': 'Baseline_CNN',
             'embeddings': args.pretrained_embeddings,
-            'hidden_layers': args.hidden_layers,
-            'dropout': args.dropout,
             'embeddings_size': args.embeddings_size,
-            'epochs': args.epochs
+            'epochs': args.epochs,
+            'batch_size': args.batch_size,
+            'freeze_embeddings': args.freeze_embeddings,
+            'learning_rate': args.learning_rate,
+            'weight_decay': args.weight_decay,
+            'random_buffer_size': args.random_buffer_size
         })
-        # Let's check for the device
+        # Look for the device
         device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
         logging.info('Building classifier')
@@ -197,19 +211,16 @@ if __name__ == '__main__':
                 pretrained_embeddings_path=args.pretrained_embeddings,
                 token_to_index=args.token_to_index,
                 n_labels=train_dataset.n_labels,
-                hidden_layers=args.hidden_layers,
-                dropout=args.dropout,
                 vector_size=args.embeddings_size,
-                freeze_embedings=True # This could be an hyperparameter
+                freeze_embedings=args.freeze_embeddings
                 )
-
-        # Let's send the model to the device
+        # Send the model to the device
         model = model.to(device)
         loss = nn.CrossEntropyLoss()
         optimizer = optim.Adam(
             model.parameters(),
-            lr=1e-3, # This could be an hyperparameter
-            weight_decay=1e-5 # This could be an hyperparameter
+            lr=args.learning_rate,
+            weight_decay=args.weight_decay
         )
 
         logging.info('Training classifier')
@@ -262,4 +273,3 @@ if __name__ == '__main__':
                     predictions.extend(output.argmax(axis=1).detach().cpu().numpy())
                 mlflow.log_metric('test_loss', sum(running_loss) / len(running_loss), epoch)
                 mlflow.log_metric('test_bacc', balanced_accuracy_score(targets, predictions), epoch)
-
