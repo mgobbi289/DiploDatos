@@ -101,19 +101,19 @@ if __name__ == '__main__':
                         type=int)
     # Hidden Layers
     parser.add_argument('--hidden-layers',
+                        default=[256, 128],
                         help='Sizes of the hidden layers of the MLP (can be one or more values).',
                         nargs='+',
-                        default=[256, 128],
                         type=int)
     # Dropout
     parser.add_argument('--dropout',
-                        help='Dropout to apply to each hidden layer.',
                         default=0.3,
+                        help='Dropout to apply to each hidden layer.',
                         type=float)
     # Epochs
     parser.add_argument('--epochs',
-                        help='Number of epochs.',
                         default=3,
+                        help='Number of epochs.',
                         type=int)
     # Batch Size
     parser.add_argument('--batch-size',

@@ -19,15 +19,16 @@ from .dataset import MeLiChallengeDataset
 
 logging.basicConfig(format='%(asctime)s: %(levelname)s - %(message)s', level=logging.INFO)
 
-FILTERS_COUNT = 100
-FILTERS_LENGTH = [2, 3, 4]
 
-
-class CNNClassifier(nn.Module):
+class RNNClassifier(nn.Module):
     def __init__(self,
                  pretrained_embeddings_path,
                  token_to_index,
                  n_labels,
+                 hidden_layers=[256, 128],
+                 dropout=0.3,
+                 lstm_features=128,
+                 lstm_layers=3,
                  vector_size=300,
                  freeze_embedings=True):
         super().__init__()
@@ -47,27 +48,38 @@ class CNNClassifier(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(embeddings_matrix,
                                                        freeze=freeze_embedings,
                                                        padding_idx=0)
-        # Convolutional Layers
-        self.convs = []
-        for filter_lenght in FILTERS_LENGTH:
-            self.convs.append(
-                    nn.Conv1d(vector_size, FILTERS_COUNT, filter_lenght)
-                    )
-        self.convs = nn.ModuleList(self.convs)
-        # Linear Layer
-        self.fc = nn.Linear(FILTERS_COUNT * len(FILTERS_LENGTH), 128)
-        self.output = nn.Linear(128, n_labels)
+        # Batch Normalization Layer
+        self.norm = nn.BatchNorm1d(vector_size)
+        # LSTM Layers
+        self.lstm_config = {'input_size': vector_size,
+                            'hidden_size': lstm_features,
+                            'num_layers': lstm_layers,
+                            'batch_first': True,
+                            'dropout': dropout if lstm_layers > 1 else 0.0}
+        self.lstm = nn.LSTM(**self.lstm_config)
+        # Linear Layers
+        self.hidden_layers = [
+            nn.Linear(lstm_features, hidden_layers[0])
+        ]
+        for input_size, output_size in zip(hidden_layers[:-1], hidden_layers[1:]):
+            self.hidden_layers.append(
+                nn.Linear(input_size, output_size)
+            )
+        self.dropout = dropout
+        self.hidden_layers = nn.ModuleList(self.hidden_layers)
+        self.output = nn.Linear(hidden_layers[-1], n_labels)
         self.vector_size = vector_size
 
-    @staticmethod
-    def conv_global_max_pool(x, conv):
-        return F.relu(conv(x).transpose(1, 2).max(1)[0])
-
     def forward(self, x):
-        x = self.embeddings(x).transpose(1, 2) # Conv1d takes (batch, channel, seq_len)
-        x = [self.conv_global_max_pool(x, conv) for conv in self.convs]
-        x = torch.cat(x, dim=1)
-        x = F.relu(self.fc(x))
+        x = self.embeddings(x)
+        x = self.norm(x)
+        x, _ = self.lstm(x)
+        # Take last state of lstm, which is a representation of the entire text
+        x = x[:, -1, :].squeeze()
+        for layer in self.hidden_layers:
+            x = F.relu(layer(x))
+            if self.dropout:
+                x = F.dropout(x, self.dropout)
         x = self.output(x)
         return x
 
@@ -100,6 +112,27 @@ if __name__ == '__main__':
     parser.add_argument('--embeddings-size',
                         default=300,
                         help='Size of the vectors.',
+                        type=int)
+    # Hidden Layers
+    parser.add_argument('--hidden-layers',
+                        default=[256, 128],
+                        help='Sizes of the hidden layers of the MLP (can be one or more values).',
+                        nargs='+',
+                        type=int)
+    # Dropout
+    parser.add_argument('--dropout',
+                        default=0.3,
+                        help='Dropout to apply to each hidden layer.',
+                        type=float)
+    # LSTM Features
+    parser.add_argument('--lstm-features',
+                        default=128,
+                        help='Features of LSTM layer.',
+                        type=int)
+    # LSTM Layers
+    parser.add_argument('--lstm-layers',
+                        default=3,
+                        help='Ammount of LSTM layers.',
                         type=int)
     # Epochs
     parser.add_argument('--epochs',
@@ -193,8 +226,12 @@ if __name__ == '__main__':
         logging.info('Starting experiment')
         # Log all relevent hyperparameters
         mlflow.log_params({
-            'model_type': 'Baseline_CNN',
+            'model_type': 'Baseline_RNN',
             'embeddings': args.pretrained_embeddings,
+            'hidden_layers': args.hidden_layers,
+            'dropout': args.dropout,
+            'lstm_features': args.lstm_features,
+            'lstm_layers': args.lstm_layers,
             'embeddings_size': args.embeddings_size,
             'epochs': args.epochs,
             'batch_size': args.batch_size,
@@ -207,10 +244,14 @@ if __name__ == '__main__':
         device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
         logging.info('Building classifier')
-        model = CNNClassifier(
+        model = RNNClassifier(
                 pretrained_embeddings_path=args.pretrained_embeddings,
                 token_to_index=args.token_to_index,
                 n_labels=train_dataset.n_labels,
+                hidden_layers=args.hidden_layers,
+                dropout=args.dropout,
+                lstm_features=args.lstm_features,
+                lstm_layers=args.lstm_layers,
                 vector_size=args.embeddings_size,
                 freeze_embedings=args.freeze_embeddings
                 )
