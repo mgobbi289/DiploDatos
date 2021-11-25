@@ -25,6 +25,8 @@ class CNNClassifier(nn.Module):
                  pretrained_embeddings_path,
                  token_to_index,
                  n_labels,
+                 hidden_layers=[128],
+                 dropout=0.0,
                  filters_count=100,
                  filters_length=[2, 3, 4],
                  vector_size=300,
@@ -53,9 +55,17 @@ class CNNClassifier(nn.Module):
                     nn.Conv1d(vector_size, filters_count, filter_length)
                     )
         self.convs = nn.ModuleList(self.convs)
-        # Linear Layer
-        self.fc = nn.Linear(filters_count * len(filters_length), 128)
-        self.output = nn.Linear(128, n_labels)
+        # Linear Layers
+        self.hidden_layers = [
+            nn.Linear(filters_count * len(filters_length), hidden_layers[0])
+        ]
+        for input_size, output_size in zip(hidden_layers[:-1], hidden_layers[1:]):
+            self.hidden_layers.append(
+                nn.Linear(input_size, output_size)
+            )
+        self.dropout = dropout
+        self.hidden_layers = nn.ModuleList(self.hidden_layers)
+        self.output = nn.Linear(hidden_layers[-1], n_labels)
         self.vector_size = vector_size
 
     @staticmethod
@@ -66,7 +76,10 @@ class CNNClassifier(nn.Module):
         x = self.embeddings(x).transpose(1, 2) # Conv1d takes (batch, channel, seq_len)
         x = [self.conv_global_max_pool(x, conv) for conv in self.convs]
         x = torch.cat(x, dim=1)
-        x = F.relu(self.fc(x))
+        for layer in self.hidden_layers:
+            x = F.relu(layer(x))
+            if self.dropout:
+                x = F.dropout(x, self.dropout)
         x = self.output(x)
         return x
 
@@ -100,6 +113,17 @@ if __name__ == '__main__':
                         default=300,
                         help='Size of the vectors.',
                         type=int)
+    # Hidden Layers
+    parser.add_argument('--hidden-layers',
+                        default=[128],
+                        help='Sizes of the hidden layers of the MLP (can be one or more values).',
+                        nargs='+',
+                        type=int)
+    # Dropout
+    parser.add_argument('--dropout',
+                        default=0.0,
+                        help='Dropout to apply to each hidden layer.',
+                        type=float)
     # Filters Count
     parser.add_argument('--filters-count',
                         default=100,
@@ -205,6 +229,8 @@ if __name__ == '__main__':
         mlflow.log_params({
             'model_type': 'Baseline_CNN',
             'embeddings': args.pretrained_embeddings,
+            'hidden_layers': args.hidden_layers,
+            'dropout': args.dropout,
             'filters_count': args.filters_count,
             'filters_length': args.filters_length,
             'embeddings_size': args.embeddings_size,
@@ -223,6 +249,8 @@ if __name__ == '__main__':
                 pretrained_embeddings_path=args.pretrained_embeddings,
                 token_to_index=args.token_to_index,
                 n_labels=train_dataset.n_labels,
+                hidden_layers=args.hidden_layers,
+                dropout=args.dropout,
                 filters_count=args.filters_count,
                 filters_length=args.filters_length,
                 vector_size=args.embeddings_size,
