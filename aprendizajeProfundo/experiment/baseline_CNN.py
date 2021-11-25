@@ -48,7 +48,7 @@ class CNNClassifier(nn.Module):
                                                        padding_idx=0)
         # Convolutional Layers
         self.convs = []
-        for filter_lenght in filters_length:
+        for filter_length in filters_length:
             self.convs.append(
                     nn.Conv1d(vector_size, filters_count, filter_length)
                     )
