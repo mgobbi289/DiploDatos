@@ -48,8 +48,6 @@ class RNNClassifier(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(embeddings_matrix,
                                                        freeze=freeze_embedings,
                                                        padding_idx=0)
-        # Batch Normalization Layer
-        self.norm = nn.BatchNorm1d(vector_size)
         # LSTM Layers
         self.lstm_config = {'input_size': vector_size,
                             'hidden_size': lstm_features,
@@ -72,7 +70,6 @@ class RNNClassifier(nn.Module):
 
     def forward(self, x):
         x = self.embeddings(x)
-        x = self.norm(x)
         x, _ = self.lstm(x)
         # Take last state of lstm, which is a representation of the entire text
         x = x[:, -1, :].squeeze()
