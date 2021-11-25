@@ -19,15 +19,14 @@ from .dataset import MeLiChallengeDataset
 
 logging.basicConfig(format='%(asctime)s: %(levelname)s - %(message)s', level=logging.INFO)
 
-FILTERS_COUNT = 100
-FILTERS_LENGTH = [2, 3, 4]
-
 
 class CNNClassifier(nn.Module):
     def __init__(self,
                  pretrained_embeddings_path,
                  token_to_index,
                  n_labels,
+                 filters_count=100,
+                 filters_length=[2, 3, 4],
                  vector_size=300,
                  freeze_embedings=True):
         super().__init__()
@@ -49,13 +48,13 @@ class CNNClassifier(nn.Module):
                                                        padding_idx=0)
         # Convolutional Layers
         self.convs = []
-        for filter_lenght in FILTERS_LENGTH:
+        for filter_lenght in filters_length:
             self.convs.append(
-                    nn.Conv1d(vector_size, FILTERS_COUNT, filter_lenght)
+                    nn.Conv1d(vector_size, filters_count, filter_length)
                     )
         self.convs = nn.ModuleList(self.convs)
         # Linear Layer
-        self.fc = nn.Linear(FILTERS_COUNT * len(FILTERS_LENGTH), 128)
+        self.fc = nn.Linear(filters_count * len(filters_length), 128)
         self.output = nn.Linear(128, n_labels)
         self.vector_size = vector_size
 
@@ -100,6 +99,17 @@ if __name__ == '__main__':
     parser.add_argument('--embeddings-size',
                         default=300,
                         help='Size of the vectors.',
+                        type=int)
+    # Filters Count
+    parser.add_argument('--filters-count',
+                        default=100,
+                        help='Ammount of CNN filters to apply.',
+                        type=int)
+    # Filters Length
+    parser.add_argument('--filters-length',
+                        default=[2, 3, 4],
+                        help='Size of CNN filters to apply.',
+                        nargs='+',
                         type=int)
     # Epochs
     parser.add_argument('--epochs',
@@ -195,6 +205,8 @@ if __name__ == '__main__':
         mlflow.log_params({
             'model_type': 'Baseline_CNN',
             'embeddings': args.pretrained_embeddings,
+            'filters_count': args.filters_count,
+            'filters_length': args.filters_length,
             'embeddings_size': args.embeddings_size,
             'epochs': args.epochs,
             'batch_size': args.batch_size,
@@ -211,6 +223,8 @@ if __name__ == '__main__':
                 pretrained_embeddings_path=args.pretrained_embeddings,
                 token_to_index=args.token_to_index,
                 n_labels=train_dataset.n_labels,
+                filters_count=args.filters_count,
+                filters_length=args.filters_length,
                 vector_size=args.embeddings_size,
                 freeze_embedings=args.freeze_embeddings
                 )
