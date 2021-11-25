@@ -28,7 +28,5 @@ python -m experiment.baseline_MLP \
     --test-data ./data/MeLi_Challenge/spanish.test.jsonl.gz \
     --token-to-index ./data/MeLi_Challenge/spanish_token_to_index.json.gz \
     --pretrained-embeddings ./data/SBW-vectors-300-min5.txt.gz \
-    --language spanish \
-    --hidden-layers 256 128 \
-    --dropout 0.3
+    --language spanish
 
