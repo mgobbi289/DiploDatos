@@ -30,6 +30,8 @@ class CNNClassifier(nn.Module):
                  n_labels,
                  vector_size=300,
                  freeze_embedings=True,
+                 hidden_layers=[256, 128],
+                 dropout=0.3,
                  batch_size=128):
         super().__init__()
         with gzip.open(token_to_index, 'rt') as fh:
@@ -55,10 +57,20 @@ class CNNClassifier(nn.Module):
                     nn.Conv1d(vector_size, FILTERS_COUNT, filter_lenght)
                     )
         self.convs = nn.ModuleList(self.convs)
-        # Linear Layer
-        self.fc = nn.Linear(FILTERS_COUNT * len(FILTERS_LENGTH), batch_size)
-        self.output = nn.Linear(batch_size, n_labels)
+        
+        # Linear Layers
+        self.hidden_layers = [
+            nn.Linear(FILTERS_COUNT * len(FILTERS_LENGTH), hidden_layers[0])
+        ]
+        for input_size, output_size in zip(hidden_layers[:-1], hidden_layers[1:]):
+            self.hidden_layers.append(
+                nn.Linear(input_size, output_size)
+            )
+        self.dropout = dropout
+        self.hidden_layers = nn.ModuleList(self.hidden_layers)
+        self.output = nn.Linear(hidden_layers[-1], n_labels)
         self.vector_size = vector_size
+        
 
     @staticmethod
     def conv_global_max_pool(x, conv):
@@ -68,7 +80,10 @@ class CNNClassifier(nn.Module):
         x = self.embeddings(x).transpose(1, 2) # Conv1d takes (batch, channel, seq_len)
         x = [self.conv_global_max_pool(x, conv) for conv in self.convs]
         x = torch.cat(x, dim=1)
-        x = F.relu(self.fc(x))
+        for layer in self.hidden_layers:
+            x = F.relu(layer(x))
+            if self.dropout:
+                x = F.dropout(x, self.dropout)
         x = self.output(x)
         return x
 
@@ -132,6 +147,17 @@ if __name__ == '__main__':
                         default=2048,
                         help='Size of the randomizer buffer.',
                         type=int)
+    # Hidden Layers
+    parser.add_argument('--hidden-layers',
+                        default=[256, 128],
+                        help='Sizes of the hidden layers of the MLP (can be one or more values).',
+                        nargs='+',
+                        type=int)
+    # Dropout
+    parser.add_argument('--dropout',
+                        default=0.3,
+                        help='Dropout to apply to each hidden layer.',
+                        type=float)
 
     args = parser.parse_args()
 
