@@ -13,6 +13,8 @@ from torch.utils.data import DataLoader
 from sklearn.metrics import balanced_accuracy_score
 from tqdm import tqdm, trange
 
+import numpy as np
+
 from functools import partial
 
 from hyperopt import hp, fmin, tpe, Trials, STATUS_OK
@@ -182,7 +184,7 @@ def train_val_test_model(train_data,
 
         main_metric = []
         logging.info('Training classifier')
-        for epoch in trange(args.epochs):
+        for epoch in trange(epochs):
             model.train()
             running_loss = []
             for idx, batch in enumerate(tqdm(train_loader)):
@@ -232,27 +234,24 @@ def train_val_test_model(train_data,
                     predictions.extend(output.argmax(axis=1).detach().cpu().numpy())
                 mlflow.log_metric('test_loss', sum(running_loss) / len(running_loss), epoch)
                 mlflow.log_metric('test_bacc', balanced_accuracy_score(targets, predictions), epoch)
+            # This is the best model that we found!
+            return model
     # This is the metric that we want to maximize!
     return main_metric
 
 
 # Define an objective function
-def objective_function(train_data,
+def objective_function(# Searched Parameters
+                       searched_params,
+                       # Fixed Parameters
+                       train_data,
                        validation_data,
                        test_data,
                        token_to_index,
                        pretrained_embeddings,
                        language,
-                       embeddings_size,
-                       hidden_layers,
-                       dropout,
-                       epochs,
-                       batch_size,
-                       freeze_embeddings,
-                       learning_rate,
-                       weight_decay,
-                       random_buffer_size=2048):
-    logging.info(f'Exploring config...')
+                       embeddings_size):
+    logging.info('Exploring config...')
 
     main_metric = train_val_test_model(
                   train_data,
@@ -262,13 +261,7 @@ def objective_function(train_data,
                   pretrained_embeddings,
                   language,
                   embeddings_size,
-                  hidden_layers,
-                  dropout,
-                  epochs,
-                  batch_size,
-                  freeze_embeddings,
-                  learning_rate,
-                  weight_decay)
+                  **searched_params)
 
     history = {}
     # This is the value that will be minimized!
@@ -310,6 +303,7 @@ if __name__ == '__main__':
                         default=300,
                         help='Size of the vectors.',
                         type=int)
+    args = parser.parse_args()
 
     # Some parameteres never change...
     fixed_params = {'train_data': args.train_data,
@@ -317,33 +311,44 @@ if __name__ == '__main__':
                     'token_to_index': args.token_to_index,
                     'pretrained_embeddings': args.pretrained_embeddings,
                     'language': args.language,
-                    'embeddings_size': args.embedding_size
+                    'embeddings_size': args.embeddings_size
                    }
 
     # Define the search space...
-    space = {'hidden_layers': hp.choice('hidden_layers', [[256, 128],
-                                                          [256, 514, 256],
-                                                          [514, 256, 128],
-                                                          [514, 1024, 514, 256],
-                                                          [514, 1024, 514, 256, 128]]
-                                       ),
-             'epochs': hp.choice('epochs', [3, 5, 10, 20]),
-             'bath_size': hp.choice('batch_size', [128, 256, 514]),
-             'freeze_embeddings': hp.choice('freeze_embeddings', [True, False]),
+    hidden_layers_choices = [[256, 128],
+                             [256, 514, 256],
+                             [514, 256, 128],
+                             [514, 1024, 514, 256],
+                             [514, 1024, 514, 256, 128]]
+    epochs_choices = [1, 3, 5, 10, 15]
+    batch_size_choices = [128, 256, 514]
+    freeze_embeddings_choices = [True, False]
+    space = {'hidden_layers': hp.choice('hidden_layers', hidden_layers_choices),
+             'epochs': hp.choice('epochs', epochs_choices),
+             'batch_size': hp.choice('batch_size', batch_size_choices),
+             'freeze_embeddings': hp.choice('freeze_embeddings', freeze_embeddings_choices),
              'dropout': hp.uniform('dropout', 0, 0.5),
              'learning_rate': hp.loguniform('learning_rate', np.log(0.00001), np.log(0.1)),
-             'weight-decay': hp.loguniform('weight-decay', np.log(0.00001), np.log(0.1)),
+             'weight_decay': hp.loguniform('weight_decay', np.log(0.00001), np.log(0.1))
             }
-    
+
     # Define the Trials object, which will allow us to store information from every experiment.
     trials = Trials()
 
+    partial_params = {**fixed_params, 'test_data': None}
     # We define some partial function to minimize
-    fmin_objective = partial(objective_function, test_data=None, **fixed_params)
- 
+    fmin_objective = partial(objective_function, **partial_params)
+
     # Minimize the objective function over the space
-    best_params = fmin(fmin_objective, space, algo=tpe.suggest, max_evals=25, trials=trials)
+    best_params = fmin(fmin_objective, space, algo=tpe.suggest, max_evals=10, trials=trials)
+    # We need to get back the proper values selected
+    best_params['hidden_layers'] = hidden_layers_choices[best_params['hidden_layers']]
+    best_params['epochs'] = epochs_choices[best_params['epochs']]
+    best_params['batch_size'] = batch_size_choices[best_params['batch_size']]
+    best_params['freeze_embeddings'] = freeze_embeddings_choices[best_params['freeze_embeddings']]
 
     # Get the final results :)
-    params = {**fixed_params, **best_params}
-    train_val_test_model(test_data=args.test_data, **params)
+    full_params = {**fixed_params, **best_params, 'test_data': args.test_data}
+
+    best_model = train_val_test_model(**full_params)
+    # We could do something with this model if we wanted...
