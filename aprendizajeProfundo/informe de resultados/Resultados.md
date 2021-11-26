@@ -46,6 +46,6 @@ CNN 1:
     --filters-length 2 3 4\
     --filters-count 200 \
 
-<img src='imagenes/+_mlflow1.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
+<img src='imagenes/mlflow1.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
 test_baccuracy=0.722
-<img src='imagenes/+_mlflow2-loss.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
+<img src='imagenes/mlflow1-loss.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
