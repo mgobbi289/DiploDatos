@@ -35,4 +35,17 @@ El dataset incluye también datos en idioma portugues.
 - baseline_CNN
 - baseline_RNN
 
+CNN 1:     
+    --language spanish \
+    --hidden-layers 512 256 128 \
+    --dropout 0.3 \
+    --learning-rate 1e-4 \
+    --random-buffer-size 2048 \
+    --epochs 15 \
+    --batch-size 300 \
+    --filters-length 2 3 4\
+    --filters-count 200 \
 
+<img src='imagenes/+_mlflow1.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
+test_baccuracy=0.722
+<img src='imagenes/+_mlflow2-loss.png' alt='MeLi Challenge spanish' style='float: center; margin-right: 10px;' width='80%'/>
