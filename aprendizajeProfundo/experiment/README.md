@@ -64,6 +64,37 @@ Existe un conjunto de hiperparámetros que se mantuvo constante durante el desar
 - A pesar de solo ser *baselines*, se obtuvieron resultados bastante prometedores.
 - Notar que varios de los hiperparámetros de los modelos coinciden en sus valores.
 
+# Búsqueda de Hiperparámetros
+
+Definiendo un espacio totalmente arbitrario de búsqueda, se intentó automatizar el proceso para encontrar mejores hiperparámetros.
+- Se utilizó la librería `hyperopt`, y se realizó un máximo de **10** intentos por cada arquitectura.
+En caso de ser necesario, se puede revisar el script correspondiente a cada modelo para verificar el espacio considerado en los experimentos.
+
+#### Hiperparámetros
+
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      |
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP                  | (256, 128)           | 0.2                  | 6e-04                | 1e-05                | 10                   | 514                  | False                | ---                  | ---                  | ---                  | ---                  |
+| CNN                  | (256, 128)           | 0.4                  | 5e-05                | 1e-05                | 1                    | 514                  | False                | 100                  | (2, 3, 4, 5)         | ---                  | ---                  |
+| RNN                  | (256, 514, 256)      | 0.4                  | 8e-05                | 1e-05                | 10                   | 128                  | True                 | ---                  | ---                  | 3                    | 128                  |
+
+#### Métricas
+
+| Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| MLP                       | **0.932**                 | 0.875                     | 0.279                     | 0.521                     | 0.502                     |
+| CNN                       | **0.563**                 | 0.522                     | 2.119                     | 1.893                     | 3.849                     |
+| RNN                       | **0.675**                 | 0.600                     | 1.493                     | 1.720                     | 1.837                     |
+
+#### Observaciones
+
+- Notar que solo listamos el mejor modelo encontrado por cada búsqueda.
+- Resulta evidente que la búsqueda no fue del todo adecuada, o al menos no brindó los resultados esperados.
+    - Quizás el espacio de búsqueda era demasiado grande (muchos parámetros y muchas opciones).
+    - Probablemente se realizaron muy poco intentos, y se necesitarían más para que el proceso de búsqueda comenzara a converger a mejores modelos.
+    - Incluso es posible que las opciones especificadas no sean lo suficientemente buenas para encontrar un modelo convincente.
+- De todas maneras, se encontró un modelo extremadamente satisfactorio de **MLP** (superando ampliamente su *baseline*).
+
 # TODO: Redactar cada una de las siguientes secciones...
 
 # Experimentos Manuales
@@ -75,16 +106,5 @@ Listado de resultados y métricas.
 - Loss en test y train.
 
 (mencionar los hiperparámetros modificados en cada situación obviamente)
-
-# Búsqueda de Hiperparámetros
-
-Se configuró una búsqueda automática por un espacio que consideramos razonable.
-Explicar lo que intentamos conseguir con la búsqueda (cantidad de intentos, espacio de búsqueda, valores posibles de hiperparámetros).
-
-- Listado de resultados y métricas.
-- Balances Accuracy en test y train.
-- Loss en test y train.
-
-(mencionar los mejores hiperparámetros encontrados)
 
 # Conclusión
