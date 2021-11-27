@@ -34,15 +34,37 @@ En total, cuenta con anotaciones de títulos para 632 categorías distintas.
 
 A continuación reportaremos los resultados de nuestros experimentos, junto con algunas reflexiones y observaciones sobre la investigación realizada.
 
-# TODO: Redactar cada una de las siguientes secciones...
-
 # Baselines
 
-Listado de todos los hiperparámetros por defecto (para MLP, CNN, y RNN).
+Existe un conjunto de hiperparámetros que se mantuvo constante durante el desarrollo de todo el trabajo.
+- Los conjuntos de datos `train_data`, `validation_data`, `test_data`.
+- La preparación de los *embeddings* `language`, `embeddings`.
+- Los resultados del preprocesamiento `token_to_index`.
+- La pseudo-aleatorización de los datos `random_buffer_size`.
 
-Listado de resultados y métricas.
-- Balanced Accuracy en test y train.
-- Loss en test y train.
+#### Hiperparámetros
+
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      |
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | ---                  | ---                  |
+| CNN                  | (128)                | 0.0                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | 100                  | (2, 3, 4)            | ---                  | ---                  |
+| RNN                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | 3                    | 128                  |
+
+#### Métricas
+
+| Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| MLP                       | **0.447**                 | 0.414                     | 2.768                     | 2.810                     | 2.834                     |
+| CNN                       | **0.725**                 | 0.675                     | 1.220                     | 1.433                     | 1.437                     |
+| RNN                       | **0.870**                 | 0.795                     | 0.574                     | 0.869                     | 0.968                     |
+
+#### Observaciones
+
+- Resulta evidente que nuestro mejor modelo es **RNN** (mientras que el peor es **MLP**).
+- A pesar de solo ser *baselines*, se obtuvieron resultados bastante prometedores.
+- Notar que varios de los hiperparámetros de los modelos coinciden en sus valores.
+
+# TODO: Redactar cada una de las siguientes secciones...
 
 # Experimentos Manuales
 
