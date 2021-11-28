@@ -40,7 +40,7 @@ Existe un conjunto de hiperparámetros que se mantuvo constante durante el desar
 - Los conjuntos de datos `train_data`, `validation_data`, `test_data`.
 - La preparación de los *embeddings* `language`, `embeddings`.
 - Los resultados del preprocesamiento `token_to_index`.
-- La pseudo-aleatorización de los datos `random_buffer_size`.
+- La pseudo-aleatorización de los datos `random_buffer_size`. (a esto yo lo modifiqué en los modelos que corrí , lau)
 
 #### Hiperparámetros
 
@@ -107,4 +107,51 @@ Listado de resultados y métricas.
 
 (mencionar los hiperparámetros modificados en cada situación obviamente)
 
+# MLP 
+
+Se procedió a modificar los hiperparámetros correspondientes al MLP baseline para superar las métricas obtenidas por esta primera aproximación. Los hiperparámetros modificados fueron: `batch_size`, `epochs`, `dropout`, `learning_rate`, `hidden_layers`, `random_buffer_size` y `weight_decay`. (agregar los hiperparámetros modificados en las otras corridas)
+
+
+#### Hiperparámetros (agregar las otras corridas)
+
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size`|
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP_1                  | (800, 550, 250)           | 0.2                  | 1e-04                 | 0                | 15                   | 400                  | True                 | ---                  | ---                  | ---                  | ---                  | 1000                |
+
+
+| Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| MLP_1                       | **0.67**                 | 0.618                     | 1.499                     | 1.69                     | 1.673                     |
+
+Figura 1a ![newplot](https://user-images.githubusercontent.com/71526828/143769708-41ec3723-6e80-445a-95d0-8f21a2e6f31a.png)
+Figura 1b ![newplot (1)](https://user-images.githubusercontent.com/71526828/143769738-8823a6ce-1f7e-48d7-8480-7f731a3f44ed.png)
+
+#### Observaciones
+- A partir de los resultados del primer modelo MLP_1 se puede observar que una mayor complejización del MLP baseline mejoró ampliamente la métrica de balance accuracy en el conjunto de test, pasando de una valor de 0.447 a un valor de 0.67. Esta complejización del modelo estuvo dada por un aumento en el número de capas ocultas (`hidden_layers`) y en el número de neuronas por capa. Asimismo, tal como se observa en la Figura 1, un incremento en el número de iteraciones (`epochs`) determina una aumento en el balance accuracy del conjunto de validación (Fig. 1a), así como también, una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 1b).
+
+# CNN 
+
+Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline con el fin de mejorar las métricas obtenidas por esta primera aproximación. Los hiperparámetros modificados fueron: `batch_size`, `epochs`, `dropout`, `learning_rate`, `hidden_layers`, `random_buffer_size`,  `weight_decay`, `filters_count` y `filters_length` . (agregar los hiperparámetros modificados en las otras corridas)
+
+
+#### Hiperparámetros (agregar las otras corridas)
+
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size`|
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| CNN_1                  | (800, 550, 250)                | 0.2                  | 1e-04               | 1e-06                | 10                    | 400                  | True                 | 150                  | (3, 4, 5)            | ---                  | ---                  | 1000                |
+
+
+| Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| CNN_1                       | **0.762**                 | 0.704                     | 1.033                     | 1.247                     | 1.189                     |
+
+Figura 2a ![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
+Figura 2b ![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
+
+#### Observaciones
+- Al igual que en el caso del MLP, una mayor complejidad del CNN baseline, dada por un aumento en el número de capas ocultas (`hidden_layers`), en el número de neuronas por capa y en el número y tamaño de los filtros, determinó una mejora en el balance accuracy del conjunto de test en el modelo CNN_1. Sin embargo, esta mejora no fue muy importante pasando de un valor de 0.725 a un valor de 0.762. Es posible que la complejización del model no sea un factor clave en la mejora del modelo, ya que a diferencia del CNN baseline, se incorporó el `dropout` que controla el overfitting que podría generar el aumento en el número de hiperparámetros. Asimismo, el incremento en el número de `epochs` determinó un aumento en el balance accuracy del conjunto de validación (Fig. 2a) y una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 2b).  
+
+# RNN (pegar las mismas tablas para las corridas de RNN)
+
+#### Observaciones
 # Conclusión
