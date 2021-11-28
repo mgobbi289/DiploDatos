@@ -124,9 +124,11 @@ Se procedió a modificar los hiperparámetros correspondientes al MLP baseline p
 | MLP_1                       | **0.67**                 | 0.618                     | 1.499                     | 1.69                     | 1.673                     |
 
 ![newplot](https://user-images.githubusercontent.com/71526828/143769708-41ec3723-6e80-445a-95d0-8f21a2e6f31a.png)
+
 Figura 1a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 
 ![newplot (1)](https://user-images.githubusercontent.com/71526828/143769738-8823a6ce-1f7e-48d7-8480-7f731a3f44ed.png)
+
 Figura 1b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 
 #### Observaciones
@@ -149,9 +151,11 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 | CNN_1                       | **0.762**                 | 0.704                     | 1.033                     | 1.247                     | 1.189                     |
 
 ![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
+
 Figura 2a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 
 ![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
+
 Figura 2b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 
 #### Observaciones
