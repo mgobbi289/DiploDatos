@@ -123,11 +123,11 @@ Se procedió a modificar los hiperparámetros correspondientes al MLP baseline p
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
 | MLP_1                       | **0.67**                 | 0.618                     | 1.499                     | 1.69                     | 1.673                     |
 
-Figura 1a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 ![newplot](https://user-images.githubusercontent.com/71526828/143769708-41ec3723-6e80-445a-95d0-8f21a2e6f31a.png)
+Figura 1a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 
-Figura 1b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 ![newplot (1)](https://user-images.githubusercontent.com/71526828/143769738-8823a6ce-1f7e-48d7-8480-7f731a3f44ed.png)
+Figura 1b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 
 #### Observaciones
 - A partir de los resultados del primer modelo MLP_1 se puede observar que una mayor complejización del MLP baseline mejoró ampliamente la métrica de balance accuracy en el conjunto de test, pasando de una valor de 0.447 a un valor de 0.67. Esta complejización del modelo estuvo dada por un aumento en el número de capas ocultas (`hidden_layers`) y en el número de neuronas por capa. Asimismo, tal como se observa en la Figura 1, un incremento en el número de iteraciones (`epochs`) determina una aumento en el balance accuracy del conjunto de validación (Fig. 1a), así como también, una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 1b).
@@ -148,11 +148,11 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
 | CNN_1                       | **0.762**                 | 0.704                     | 1.033                     | 1.247                     | 1.189                     |
 
-Figura 2a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 ![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
+Figura 2a. Progresión de la métrica balance accuracy del conjunto de validación a través de las épocas (`epochs`).  
 
-Figura 2b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 ![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
+Figura 2b. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`).    
 
 #### Observaciones
 - Al igual que en el caso del MLP, una mayor complejidad del CNN baseline, dada por un aumento en el número de capas ocultas (`hidden_layers`), en el número de neuronas por capa y en el número (`filters_count`) y tamaño de los filtros (`filters_length`), determinó un incremento en el balance accuracy del conjunto de test en el modelo CNN_1. Sin embargo, este aumento en la performance del modelo no fue muy importante, pasando de un valor de 0.725 a un valor de 0.762. Es posible que el incremento en el número de capas, neuronas y filtros no sea un factor clave en la mejora del modelo, ya que a diferencia del CNN baseline, se incorporó el `dropout` que controla el overfitting que podría generar el aumento en el número de estos hiperparámetros. Asimismo, el incremento en el número de `epochs` determinó un aumento en el balance accuracy del conjunto de validación (Fig. 2a) y una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 2b).  
