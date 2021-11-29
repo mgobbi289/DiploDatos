@@ -157,7 +157,7 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 Figura 3. Progresión de la métrica balanced accuracy del conjunto de validación a través de las épocas (`epochs`).a) CNN_1 
 
 <img src='imagenes/CNN2_bacc.png' alt='BACC CNN_2' style='float: center; margin-right: 10px;' width='80%'/>
-b) CNN_2 - Progresión de la métrica balanced accuracy a través del tiempo
+b) CNN_2 
 (agregar las otras corridas)
 
 ![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
@@ -165,7 +165,7 @@ b) CNN_2 - Progresión de la métrica balanced accuracy a través del tiempo
 Figura 4. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`). a) CNN_1 (agregar las otras corridas)   
 
 <img src='imagenes/CNN2_Loss.png' alt='LOSS CNN_2' style='float: center; margin-right: 10px;' width='80%'/>
-b) CNN_2 -  Progresión de la función de loss a través del tiempo
+b) CNN_2 
 
 #### Observaciones
 - Al igual que en el caso del MLP, una mayor complejidad del CNN baseline, dada por un aumento en el número de capas ocultas (`hidden_layers`), en el número de neuronas por capa y en el número (`filters_count`) y tamaño de los filtros (`filters_length`), determinó un incremento en el balanced accuracy del conjunto de test en el modelo CNN_1. Sin embargo, este aumento en la performance del modelo no fue muy importante, pasando de un valor de 0.725 a un valor de 0.762. Es posible que el incremento en el número de capas, neuronas y filtros no sea un factor clave en la mejora del modelo, ya que a diferencia del CNN baseline, se incorporó el `dropout` que controla el overfitting que podría generar el aumento en el número de estos hiperparámetros. Asimismo, el incremento en el número de `epochs` determinó un aumento en el balanced accuracy del conjunto de validación (Fig. 3a) y una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 4a).  
