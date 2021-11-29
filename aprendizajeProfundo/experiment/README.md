@@ -189,4 +189,5 @@ b) CNN_2
 
 
 #### Observaciones
+Se observa que para la misma cantidad de epocas, la red más compleja (más capaz ocultas y más capas de lstm) obtuvo resultados mucho peores, entendiendose que se necesitaria mucho más entrenamiento para conseguir mejores resultados
 # Conclusión
