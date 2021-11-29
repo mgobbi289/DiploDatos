@@ -15,7 +15,7 @@ En total, cuenta con anotaciones de títulos para 632 categorías distintas.
 
 #### Modelos
 - Se declararon tres arquitecturas generales diferentes **MLP**, **CNN**, y **RNN**, donde cada una tiene la posibilidad de ser instanciada por un conjunto de hiperparámetros.
-    - Se proveen valores por defectos para cada uno de los hiperparámetros, los cuales determinan nuestros *baselines*.
+    - Se proveen valores por defecto para cada uno de los hiperparámetros, los cuales determinan nuestros *baselines*.
 - Se utilizó **MLFlow** para almacenar *logs* y resultados para cada uno de los modelos definidos, para los conjuntos de entrenamiento, validación, y evaluación.
     - Se probaron distintas combinaciones de hiperparámetros para cada arquitectura.
     - La métrica de medición era la *balanced accuracy* en el conjunto de evaluación.
@@ -40,15 +40,14 @@ Existe un conjunto de hiperparámetros que se mantuvo constante durante el desar
 - Los conjuntos de datos `train_data`, `validation_data`, `test_data`.
 - La preparación de los *embeddings* `language`, `embeddings`.
 - Los resultados del preprocesamiento `token_to_index`.
-- La pseudo-aleatorización de los datos `random_buffer_size`. (a esto yo lo modifiqué en los modelos que corrí , lau)
 
 #### Hiperparámetros
 
-| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      |
-| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
-| MLP                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | ---                  | ---                  |
-| CNN                  | (128)                | 0.0                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | 100                  | (2, 3, 4)            | ---                  | ---                  |
-| RNN                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | 3                    | 128                  |
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size` |
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | ---                  | ---                  | 2048                 |
+| CNN                  | (128)                | 0.0                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | 100                  | (2, 3, 4)            | ---                  | ---                  | 2048                 |
+| RNN                  | (256, 128)           | 0.3                  | 0.001                | 1e-05                | 3                    | 128                  | True                 | ---                  | ---                  | 3                    | 128                  | 2048                 |
 
 #### Métricas
 
@@ -72,11 +71,11 @@ En caso de ser necesario, se puede revisar el script correspondiente a cada mode
 
 #### Hiperparámetros
 
-| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      |
-| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
-| MLP                  | (256, 128)           | 0.2                  | 6e-04                | 1e-05                | 10                   | 514                  | False                | ---                  | ---                  | ---                  | ---                  |
-| CNN                  | (256, 128)           | 0.4                  | 5e-05                | 1e-05                | 1                    | 514                  | False                | 100                  | (2, 3, 4, 5)         | ---                  | ---                  |
-| RNN                  | (256, 514, 256)      | 0.4                  | 8e-05                | 1e-05                | 10                   | 128                  | True                 | ---                  | ---                  | 3                    | 128                  |
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size` |
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP                  | (256, 128)           | 0.2                  | 6e-04                | 1e-05                | 10                   | 514                  | False                | ---                  | ---                  | ---                  | ---                  | 2048                 |
+| CNN                  | (256, 128)           | 0.4                  | 5e-05                | 1e-05                | 1                    | 514                  | False                | 100                  | (2, 3, 4, 5)         | ---                  | ---                  | 2048                 |
+| RNN                  | (256, 514, 256)      | 0.4                  | 8e-05                | 1e-05                | 10                   | 128                  | True                 | ---                  | ---                  | 3                    | 128                  | 2048                 |
 
 #### Métricas
 
@@ -95,19 +94,15 @@ En caso de ser necesario, se puede revisar el script correspondiente a cada mode
     - Incluso es posible que las opciones especificadas no sean lo suficientemente buenas para encontrar un modelo convincente.
 - De todas maneras, se encontró un modelo extremadamente satisfactorio de **MLP** (superando ampliamente su *baseline*).
 
-# TODO: Redactar cada una de las siguientes secciones...
-
 # Experimentos Manuales
 
-Enumerar varios experimentos manuales (cambiando algunos hiperparámetros de forma totalmente arbitraria) que decidimos probar.
+En este punto del trabajo, contamos con modelos *baseline* satisfactorios con las arquitecturas **CNN** y **RNN**, y un modelo (encontrado con una búsqueda automática de hiperparámetros) excelente con la arquitectura **MLP**.
+Nuestro objetivo en esta etapa fue intentar superar los mejores desempeños para cada clase de modelo.
+El procedimiento fue desesestructurado, en el sentido que no se definió una metodología precisa para la búsqueda de modelos superadores.
+Principalmente nos basamos en la curiosidad de cada uno, intentando diferentes combinaciones de hiperparámetros a *prueba y error* o realizando búsquedas automáticas mucho más acotadas en sus espacios de búsqueda.
+A continuación presentamos algunos de los resultados encontrados.
 
-Listado de resultados y métricas.
-- Balanced Accuracy en test y train.
-- Loss en test y train.
-
-(mencionar los hiperparámetros modificados en cada situación obviamente)
-
-# MLP 
+## MLP 
 
 Se procedió a modificar los hiperparámetros correspondientes al MLP baseline para superar las métricas obtenidas por esta primera aproximación. Los hiperparámetros modificados fueron: `batch_size`, `epochs`, `dropout`, `learning_rate`, `hidden_layers`, `random_buffer_size` y `weight_decay`. (agregar los hiperparámetros modificados en las otras corridas)
 
@@ -190,4 +185,5 @@ b) CNN_2
 
 #### Observaciones
 Se observa que para la misma cantidad de epocas, la red más compleja (más capaz ocultas y más capas de lstm) obtuvo resultados mucho peores, entendiendose que se necesitaria mucho más entrenamiento para conseguir mejores resultados
+
 # Conclusión
