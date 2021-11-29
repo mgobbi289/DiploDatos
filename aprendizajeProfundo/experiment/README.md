@@ -114,9 +114,9 @@ Se procedió a modificar los hiperparámetros correspondientes al MLP baseline p
 
 #### Hiperparámetros (agregar las otras corridas)
 
-| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size`|
-| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |-------------------- |
-| MLP_1                  | (800, 550, 250)           | 0.2                  | 1e-04                 | 0                | 15                   | 400                  | True                 | ---                  | ---                  | ---                  | ---                  | 1000                |
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`     | `random_buffer_size`|
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| MLP_1                  | (800, 550, 250)           | 0.2                  | 1e-04                 | 0                | 15                   | 400                  | True             | 1000                |
 
 
 | Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
@@ -141,9 +141,9 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 
 #### Hiperparámetros (agregar las otras corridas)
 
-| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`     | `lstm_layers`        | `lstm_features`      | `random_buffer_size`|
-| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |-------------------- |
-| CNN_1                  | (800, 550, 250)                | 0.2                  | 1e-04               | 1e-06                | 10                    | 400                  | True                 | 150                  | (3, 4, 5)            | ---                  | ---                  | 1000                |
+| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`          | `random_buffer_size`|
+| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | 
+| CNN_1                  | (800, 550, 250)                | 0.2                  | 1e-04               | 1e-06                | 10                    | 400                  | True                 | 150                  | (3, 4, 5)              | 1000                |
 
 
 | Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
