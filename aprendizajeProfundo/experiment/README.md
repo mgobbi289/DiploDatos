@@ -154,7 +154,9 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 
 ![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
 
-Figura 3. Progresión de la métrica balanced accuracy del conjunto de validación a través de las épocas (`epochs`).a) CNN_1  (agregar las otras corridas)
+Figura 3. Progresión de la métrica balanced accuracy del conjunto de validación a través de las épocas (`epochs`).a) CNN_1 
+b) CNN_2
+<img src='imagenes/CNN_bacc.png' alt='BACC CNN_2' style='float: center; margin-right: 10px;' width='80%'/>(agregar las otras corridas)
 
 ![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
 
