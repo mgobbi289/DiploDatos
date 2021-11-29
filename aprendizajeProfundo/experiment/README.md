@@ -136,9 +136,7 @@ Figura 2. Progresión de la función de loss del conjunto de train y de validaci
 
 - A partir de los resultados del primer modelo MLP_1 se puede observar que una mayor complejización del MLP baseline mejoró ampliamente la métrica de balanced accuracy en el conjunto de test, pasando de una valor de 0.447 a un valor de 0.67. Esta complejización del modelo estuvo dada por un aumento en el número de capas ocultas (`hidden_layers`) y en el número de neuronas por capa. Asimismo, tal como se observa en las Figuras, un incremento en el número de iteraciones (`epochs`) determina una aumento en el balanced accuracy del conjunto de validación (Fig. 1a), así como también, una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 2a).
 
-## CNN: TODO
-
-Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline con el fin de mejorar las métricas obtenidas por esta primera aproximación. Los hiperparámetros modificados fueron: `batch_size`, `epochs`, `dropout`, `learning_rate`, `hidden_layers`, `random_buffer_size`,  `weight_decay`, `filters_count` y `filters_length` . (agregar los hiperparámetros modificados en las otras corridas)
+## CNN
 
 #### Hiperparámetros
 
@@ -146,7 +144,7 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
 | CNN_1                 | (800, 550, 250)       | 0.2                   | 1e-04                 | 1e-06                 | 10                    | 400                   | True                  | 150                   | (3, 4, 5)             | 1000                  |
 | CNN_2                 | (1200, 500, 256, 128) | 0.3                   | 1e-05                 | 1e-06                 | 20                    | 600                   | True                  | 100                   | (2, 3, 4, 5)          | 2000                  |
-| CNN_3                 |                       |                       |                       |                       |                       |                       |                       |                       |                       |                       |
+| CNN_3                 | (128)                 | 0.3                   | 5e-04                 | 1e-05                 | 3                     | 1024                  | False                 | 150                   | (2, 3)                | 2048                  |
 
 #### Métricas
 
@@ -154,28 +152,23 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
 | CNN_1                     | **0.762**                 | 0.704                     | 1.033                     | 1.247                     | 1.189                     |
 | CNN_2                     | **0.490**                 | 0.459                     | 2.269                     | 2.237                     | 2.215                     |
-| CNN_3                     |                           |                           |                           |                           |                           |
+| CNN_3                     | **0.937**                 | 0.880                     | 0.271                     | 0.507                     | 0.496                     |
 
 #### Gráficos
 
-![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
+![CNN Loss](images/CNN_Loss.png)
 
-Figura 3. Progresión de la métrica balanced accuracy del conjunto de validación a través de las épocas (`epochs`).a) CNN_1 
+Gráfico de la pérdida según las épocas para el modelo **CNN_3**, en validación y entrenamiento.
 
-<img src='imagenes/CNN2_bacc.png' alt='BACC CNN_2' style='float: center; margin-right: 10px;' width='80%'/>
-b) CNN_2 
-(agregar las otras corridas)
+![CNN Balanced Accuracy](images/CNN_Acc.png)
 
-![newplot (3)](https://user-images.githubusercontent.com/71526828/143769889-47525a7a-cd66-4f75-bf95-693630304362.png)
-
-Figura 4. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`). a) CNN_1 (agregar las otras corridas)   
-
-<img src='imagenes/CNN2_Loss.png' alt='LOSS CNN_2' style='float: center; margin-right: 10px;' width='80%'/>
-b) CNN_2 
+Gráfico del desempeño según las épocas para el modelo **CNN_3**, en validación.
 
 #### Observaciones
 
-- Al igual que en el caso del MLP, una mayor complejidad del CNN baseline, dada por un aumento en el número de capas ocultas (`hidden_layers`), en el número de neuronas por capa y en el número (`filters_count`) y tamaño de los filtros (`filters_length`), determinó un incremento en el balanced accuracy del conjunto de test en el modelo CNN_1. Sin embargo, este aumento en la performance del modelo no fue muy importante, pasando de un valor de 0.725 a un valor de 0.762. Es posible que el incremento en el número de capas, neuronas y filtros no sea un factor clave en la mejora del modelo, ya que a diferencia del CNN baseline, se incorporó el `dropout` que controla el overfitting que podría generar el aumento en el número de estos hiperparámetros. Asimismo, el incremento en el número de `epochs` determinó un aumento en el balanced accuracy del conjunto de validación (Fig. 3a) y una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 4a).  
+- La red **CNN_1**, es claramente diferente al modelo *baseline*, obtiene un desempeño considerablemente superior. Incluso se consigue una *balanced accuracy* mejor a la encontrada con la búsqueda automática de hiperparámetros.
+- La red **CNN_2**, ampliamente la más compleja, obtiene el peor desempeño de las redes convolucionales. Claramente algo está fallando en su entrenamiento.
+- La red **CNN_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados de las redes convolucionales. Es posible que los parámetros `batch_size` y `freeze_embeddings` sean una de las causas.
 
 ## RNN
 
@@ -211,7 +204,7 @@ Gráfico del desempeño según las épocas para el modelo **RNN_3**, en validaci
     - El parámetro `learning_rate` es muy bajo, por lo que la red no aprende (*underfitting*).
     - El parámetro `epochs` es muy alto, y la red aprende demasiado (*overfitting*).
 - La red **RNN_2**, ampliamente la más compleja, obtiene el peor de todos los desempeños. Claramente algo está fallando en su entrenamiento.
-- La red **RNN_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados de nuestra experimentación. Es posible que el parámetro `batch_size` sea una de las causas.
+- La red **RNN_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados de nuestra experimentación. Es posible que los parámetros `batch_size` y `freeze_embeddings` sean una de las causas.
 
 # Conclusión: TODO
 
