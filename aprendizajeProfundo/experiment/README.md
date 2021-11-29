@@ -144,11 +144,13 @@ Asimismo, se modificaron los hiperparámetros correspondientes al CNN baseline c
 | Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `filters_count`      | `filters_length`          | `random_buffer_size`|
 | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | 
 | CNN_1                  | (800, 550, 250)                | 0.2                  | 1e-04               | 1e-06                | 10                    | 400                  | True                 | 150                  | (3, 4, 5)              | 1000                |
+| CNN_2                  | (1200, 500, 256,128)                | 0.3                  | 1e-05               | 1e-06                | 20                    | 600                  | True                 | 100                  | (2,3, 4, 5)              | 2000                |
 
 
 | Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
 | CNN_1                       | **0.762**                 | 0.704                     | 1.033                     | 1.247                     | 1.189                     |
+| CNN_2                       | **0.49**                 | 0.459                     | 2.269                    | 2.237                 | 2.215                     |
 
 ![newplot (2)](https://user-images.githubusercontent.com/71526828/143769884-2e58894d-2108-40de-9e38-79b0608ba906.png)
 
