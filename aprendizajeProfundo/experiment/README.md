@@ -165,5 +165,17 @@ Figura 4. Progresión de la función de loss del conjunto de train y de validaci
 
 # RNN (pegar las mismas tablas para las corridas de RNN)
 
+| Model                | `hidden_layers`      | `dropout`            |`random_buffer_size`| `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`   | `lstm_layers`        | `lstm_features`      |
+| --------------------| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
+| RNN_1                  | (256, 128)           | 0.2                  | 2000                 |  1e-05                | 1e-06                | 20                   | 300                  | True                | 4                 | 128                 |
+
+
+#### Métricas
+
+| Model                     | Test Balanced Acc.        | Validation Balanced Acc.  | Test Loss                 | Validation Loss           | Train Loss                | 
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| RNN_1                       | **0.363**                 | 0.326                     | 3.08                   | 3.08                    | 3.23                     |
+
+
 #### Observaciones
 # Conclusión
