@@ -102,17 +102,15 @@ El procedimiento fue desesestructurado, en el sentido que no se definió una met
 Principalmente nos basamos en la curiosidad de cada uno, intentando diferentes combinaciones de hiperparámetros a *prueba y error*, o realizando búsquedas automáticas mucho más acotadas en sus espacios de búsqueda.
 A continuación presentamos algunos de los resultados encontrados.
 
-## MLP: TODO
-
-Se procedió a modificar los hiperparámetros correspondientes al MLP baseline para superar las métricas obtenidas por esta primera aproximación. Los hiperparámetros modificados fueron: `batch_size`, `epochs`, `dropout`, `learning_rate`, `hidden_layers`, `random_buffer_size` y `weight_decay`. (agregar los hiperparámetros modificados en las otras corridas)
+## MLP
 
 #### Hiperparámetros
 
-| Model                | `hidden_layers`      | `dropout`            | `learning_rate`      | `weight_decay`       | `epochs`             | `batch_size`         | `freeze_embeddings`  | `random_buffer_size` |
-| -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
-| MLP_1                | (800, 550, 250)      | 0.2                  | 1e-04                | 0                    | 15                   | 400                  | True                 | 1000                 |
-| MLP_2                | (256, 256, 128)      | 0.2                  | 1e-05                | 1e-06                | 20                   | 520                  | True                 | 2000                 |
-| MLP_3                |                      |                      |                      |                      |                      |                      |                      |                      |
+| Model                      | `hidden_layers`            | `dropout`                  | `learning_rate`            | `weight_decay`             | `epochs`                   | `batch_size`               | `freeze_embeddings`        | `random_buffer_size`       |
+| -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
+| MLP_1                      | (800, 550, 250)            | 0.2                        | 1e-04                      | 0                          | 15                         | 400                        | True                       | 1000                       |
+| MLP_2                      | (256, 256, 128)            | 0.2                        | 1e-05                      | 1e-06                      | 20                         | 520                        | True                       | 2000                       |
+| MLP_3                      | (514, 1024, 514, 256, 128) | 0.2                        | 1e-03                      | 1e-05                      | 5                          | 1024                       | False                      | 2048                       |
 
 #### Métricas
 
@@ -120,21 +118,23 @@ Se procedió a modificar los hiperparámetros correspondientes al MLP baseline p
 | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- |
 | MLP_1                     | **0.670**                 | 0.618                     | 1.499                     | 1.69                      | 1.673                     |
 | MLP_2                     | **0.219**                 | 0.200                     | 4.007                     | 3.877                     | 3.901                     |
-| MLP_3                     |                           |                           |                           |                           |                           |
+| MLP_3                     | **0.925**                 | 0.864                     | 0.338                     | 0.864                     | 0.579                     |
 
 #### Gráficos
 
-![newplot](https://user-images.githubusercontent.com/71526828/143769708-41ec3723-6e80-445a-95d0-8f21a2e6f31a.png)
+![MLP Loss](images/MLP_Loss.png)
 
-Figura 1. Progresión de la métrica balanced accuracy del conjunto de validación a través de las épocas (`epochs`). a) MLP_1  (agregar las otras corridas)
+Gráfico de la pérdida según las épocas para el modelo **MLP_3**, en validación y entrenamiento.
 
-![newplot (1)](https://user-images.githubusercontent.com/71526828/143769738-8823a6ce-1f7e-48d7-8480-7f731a3f44ed.png)
+![MLP Balanced Accuracy](images/MLP_Acc.png)
 
-Figura 2. Progresión de la función de loss del conjunto de train y de validación a través de las épocas (`epochs`). a) MLP_1 (agregar las otras corridas)    
+Gráfico del desempeño según las épocas para el modelo **MLP_3**, en validación.
 
 #### Observaciones
 
-- A partir de los resultados del primer modelo MLP_1 se puede observar que una mayor complejización del MLP baseline mejoró ampliamente la métrica de balanced accuracy en el conjunto de test, pasando de una valor de 0.447 a un valor de 0.67. Esta complejización del modelo estuvo dada por un aumento en el número de capas ocultas (`hidden_layers`) y en el número de neuronas por capa. Asimismo, tal como se observa en las Figuras, un incremento en el número de iteraciones (`epochs`) determina una aumento en el balanced accuracy del conjunto de validación (Fig. 1a), así como también, una disminución en la función de loss tanto en el conjunto de train como en el conjunto de evaluación (Fig. 2a).
+- La red **MLP_1**, es claramente diferente al modelo *baseline*, obtiene un desempeño considerablemente superior. De todas formas, su *balanced accuracy* sigue siendo ampliamente inferior al mejor modelo *fully connected*.
+- La red **MLP_2**, otro intento apartado del modelo *baseline*, obtiene el peor desempeño de las redes *fully connected*. Claramente algo está fallando en su entrenamiento.
+- La red **MLP_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados en esta iteración. Es posible que los parámetros `batch_size` y `freeze_embeddings` sean una de las causas. Es importante notar, que tampoco supera al mejor modelo **MLP** encontrado.
 
 ## CNN
 
