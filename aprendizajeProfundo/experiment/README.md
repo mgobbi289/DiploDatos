@@ -206,12 +206,18 @@ Gráfico del desempeño según las épocas para el modelo **RNN_3**, en validaci
 - La red **RNN_2**, ampliamente la más compleja, obtiene el peor de todos los desempeños. Claramente algo está fallando en su entrenamiento.
 - La red **RNN_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados de nuestra experimentación. Es posible que los parámetros `batch_size` y `freeze_embeddings` sean una de las causas.
 
-# Conclusión: TODO
-* En general se observa que con el modelo MLP, siendo el más simple de los 3, se obtienen resultados iguales o mejores a los otros dos modelos de red, es decir modelos más complejos no aseguran mejores resultados. Los modelos más complejos necesitan una busqueda automatica de hiperparametros más refinada para obtener buenos resultados. Para entrenar una red más compleja es necesario bastante más tiempo, ya sea entrenando o buscando hiperparametros optimos.
-* En General el balanced accuracy del conjunto de test fue superior al conjunto de validation.
-* Para los modelos con mejores resultados el Loss de Train fue menor que el de Validation.
-* La herramiento MLFLOW es muy util para la visualización de los resultados y la selección de los mejores modelos.
-* Tanto en las RNN como en las CNN, pareciera que a mayores `batch_size` mejor el resultado.
-* Los modelos con mejores resultados fueron entrenados con mayores `learning_rate`, por lo que podría suponerse que muchos modelos no llegaron a aprender lo suficientemente rapido.
+# Conclusión
 
-...
+Los mejores modelos encontrados en nuestra experimentación para cada arquitectura fueron...
+- **MLP** con un *balanced accuracy* en evaluación de **0.932** (mediante una búsqueda automática de hiperparámetros).
+- **CNN** con un *balanced accuracy* en evaluación de **0.937** (mediante una búsqueda automática de hiperparámetros refinada).
+- **RNN** con un *balanced accuracy* en evaluación de **0.946** (mediante una búsqueda automática de hiperparámetros refinada).
+
+Algunas conclusiones que podemos extraer sobre la investigación son...
+* En general se observa que con el modelo *MLP*, siendo el de arquitectura más simple, se obtienen resultados similares a las otras clases de modelos. Es decir, modelos más complejos no aseguran mejores resultados.
+* Los modelos más complejos necesitaron una búsqueda automática de hiperparámetros más refinada para obtener buenos resultados. Además, para entrenar una red compleja es necesaria una gran cantidad de tiempo, ya sea para entrenar o para buscar hiperparámetros óptimos.
+* Al parecer descongelar los *embeddings* y aumentar el tamaño del lote suele mejorer los resultados.
+* Los modelos con mejores resultados fueron entrenados con mayores tasas de aprendizaje, por lo que se podría suponer que varios modelos no llegaron a aprender lo suficientemente rápido.
+* Claramente aplicar una bùsqueda de hiperparámetros ciega, sin haber realizado una exploración manual de reconocimiento anterior, suele ser poco productiva.
+* Resulta curioso que el *balanced accuracy* del conjunto de evaluación siempre fuera superior al conjunto de validación.
+* La herramienta **MLFlow** resultó extremadamente útil para la visualización de los resultados y la selección de los mejores modelos.
