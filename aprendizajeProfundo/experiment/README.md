@@ -216,8 +216,8 @@ Los mejores modelos encontrados en nuestra experimentación para cada arquitectu
 Algunas conclusiones que podemos extraer sobre la investigación son...
 * En general se observa que con el modelo *MLP*, siendo el de arquitectura más simple, se obtienen resultados similares a las otras clases de modelos. Es decir, modelos más complejos no aseguran mejores resultados.
 * Los modelos más complejos necesitaron una búsqueda automática de hiperparámetros más refinada para obtener buenos resultados. Además, para entrenar una red compleja es necesaria una gran cantidad de tiempo, ya sea para entrenar o para buscar hiperparámetros óptimos.
-* Al parecer descongelar los *embeddings* y aumentar el tamaño del lote suele mejorer los resultados.
+* Al parecer descongelar los *embeddings* y aumentar el tamaño del lote suele mejorar los resultados.
 * Los modelos con mejores resultados fueron entrenados con mayores tasas de aprendizaje, por lo que se podría suponer que varios modelos no llegaron a aprender lo suficientemente rápido.
-* Claramente aplicar una bùsqueda de hiperparámetros ciega, sin haber realizado una exploración manual de reconocimiento anterior, suele ser poco productiva.
+* Claramente aplicar una búsqueda de hiperparámetros ciega, sin haber realizado una exploración manual de reconocimiento anterior, suele ser poco productiva.
 * Resulta curioso que el *balanced accuracy* del conjunto de evaluación siempre fuera superior al conjunto de validación.
 * La herramienta **MLFlow** resultó extremadamente útil para la visualización de los resultados y la selección de los mejores modelos.
