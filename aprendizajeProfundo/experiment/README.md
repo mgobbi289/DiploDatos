@@ -207,5 +207,11 @@ Gráfico del desempeño según las épocas para el modelo **RNN_3**, en validaci
 - La red **RNN_3**, obtenida por una búsqueda automática más refinada, consigue los mejores resultados de nuestra experimentación. Es posible que los parámetros `batch_size` y `freeze_embeddings` sean una de las causas.
 
 # Conclusión: TODO
+* En general se observa que con el modelo MLP, siendo el más simple de los 3, se obtienen resultados iguales o mejores a los otros dos modelos de red, es decir modelos más complejos no aseguran mejores resultados. Los modelos más complejos necesitan una busqueda automatica de hiperparametros más refinada para obtener buenos resultados. Para entrenar una red más compleja es necesario bastante más tiempo, ya sea entrenando o buscando hiperparametros optimos.
+* En General el balanced accuracy del conjunto de test fue superior al conjunto de validation.
+* Para los modelos con mejores resultados el Loss de Train fue menor que el de Validation.
+* La herramiento MLFLOW es muy util para la visualización de los resultados y la selección de los mejores modelos.
+* Tanto en las RNN como en las CNN, pareciera que a mayores `batch_size` mejor el resultado.
+* Los modelos con mejores resultados fueron entrenados con mayores `learning_rate`, por lo que podría suponerse que muchos modelos no llegaron a aprender lo suficientemente rapido.
 
 ...
