@@ -15,7 +15,7 @@ Requiere 4 componentes esenciales para la optimización de los hiperparámetros:
 Permite escalar el procedimiento de optimización en **múltiples núcleos y múltiples máquinas** (Apache Spark y MongoDB)
 
 Se creó una extensión de HyperOpt llamada **HyperOpt-Sklearn** que permite aplicar el procedimiento HyperOpt a la preparación de datos y los modelos de aprendizaje automático proporcionados por Scikit-Learn
-![Texto alternativo](./imagenes/1_b1zNb0WFu5j-B01NROGDCQ.jpeg)
+![Texto alternativo](/imagenes/1_b1zNb0WFu5j-B01NROGDCQ.jpeg)
 ~~~
 # define an objective function
 def objective(args):
