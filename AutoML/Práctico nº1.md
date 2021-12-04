@@ -2,12 +2,18 @@
 ## Hyperopt: Distributed Hyperparameter Optimization
 
 Librería de Python de código abierto creada por *James Bergstra en 2011*.
+
 Se creó para optimizar *pipelines* de machine learning, incluyendo el preproceso de los datos, la selección del modelo y los hiperparametros de este.
+
 Permite automatizar la búsqueda de los *hiperparámetros óptimos* de un modelo de aprendizaje automático. Basada en una *Optimización Bayesiana* y soportada por la metodología *SMBO* (Sequential Model-Based Global Optimization) 
-adaptada para trabajar con diferentes algoritmos tales como: Árbol de Estimadores Parzen (*TPE*), Árbol de adaptación de Estimadores Parzen (*ATPE*) y Procesos Gaussianos (*GP*)
+adaptada para trabajar con diferentes algoritmos tales como: Árbol de Estimadores Parzen (*TPE*), Árbol de adaptación de Estimadores Parzen (*ATPE*) y Procesos Gaussianos (*GP*).
+
 HyperOpt toma la Optimización Bayesiana como premisa al realizar algunas variaciones en el proceso de muestreo, la definición y reducción del espacio de búsqueda y los algoritmos para maximizar el modelo de probabilidad.
+
 Requiere 4 componentes esenciales para la optimización de los hiperparámetros: el *espacio de búsqueda* , la *función de pérdida* , el *algoritmo de optimización* y una *base de datos* para almacenar el historial.
+
 Permite escalar el procedimiento de optimización en *múltiples núcleos y múltiples máquinas* (Apache Spark y MongoDB)
+
 Se creó una extensión de HyperOpt llamada *HyperOpt-Sklearn* que permite aplicar el procedimiento HyperOpt a la preparación de datos y los modelos de aprendizaje automático proporcionados por Scikit-Learn
 ~~~
 # define an objective function
