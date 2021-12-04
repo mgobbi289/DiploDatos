@@ -1,26 +1,32 @@
-# AutoML: Práctico nº1
-## Hyperopt: Distributed Hyperparameter Optimization
+# AutoML: Reporte
 
-Librería de Python de código abierto creada por **James Bergstra en 2011**.
+## HyperOpt: Distributed Hyperparameter Optimization
 
-Se creó para optimizar **pipelines** de machine learning, incluyendo el preproceso de los datos, la selección del modelo y los hiperparametros de este.
+**HyperOpt** es una librería de *Python* de código abierto, creada por **James Bergstra** en 2011.
 
-Permite automatizar la búsqueda de los **hiperparámetros óptimos** de un modelo de aprendizaje automático. Basada en una **Optimización Bayesiana** y soportada por la metodología **SMBO** (Sequential Model-Based Global Optimization) 
-adaptada para trabajar con diferentes algoritmos tales como: Árbol de Estimadores Parzen (**TPE**), Árbol de adaptación de Estimadores Parzen (**ATPE**) y Procesos Gaussianos (**GP**).
+Su objetivo es optimizar **pipelines** de *machine learning*, incluyendo el preproceso de los datos, la selección del modelo, y los hiperparametros del mismo.
 
-HyperOpt toma la Optimización Bayesiana como premisa al realizar algunas variaciones en el proceso de muestreo, la definición y reducción del espacio de búsqueda y los algoritmos para maximizar el modelo de probabilidad.
+Permite automatizar la búsqueda de los *hiperparámetros óptimos* de un modelo; basada en una **Optimización Bayesiana** y soportada por la metodología **SMBO** (*Sequential Model-Based Global Optimization*) adaptada para trabajar con diferentes algoritmos tales como *Árbol de Estimadores Parzen* (**TPE**), *Árbol de adaptación de Estimadores Parzen* (**ATPE**), y *Procesos Gaussianos* (**GP**).
 
-Requiere 4 componentes esenciales para la optimización de los hiperparámetros: el **espacio de búsqueda** , la **función de pérdida** , el **algoritmo de optimización** y una **base de datos** para almacenar el historial.
+**HyperOpt** toma la **Optimización Bayesiana** como premisa al realizar algunas variaciones en el proceso de muestreo, la definición y reducción del espacio de búsqueda, y los algoritmos para maximizar el modelo de probabilidad.
 
-Permite escalar el procedimiento de optimización en **múltiples núcleos y múltiples máquinas** (Apache Spark y MongoDB)
+Requiere cuatro componentes esenciales para la optimización de los hiperparámetros:
+- **Espacio de búsqueda**
+- **Función de pérdida**
+- **Algoritmo de optimización**
+- **Base de datos**
 
-![Texto alternativo](https://github.com/mgobbi289/DiploDatos/blob/main/AutoML/Imagenes/1_ztfyT1QatezmRHx4Zjeq5g.jpeg)
+Permite escalar el procedimiento de optimización en múltiples núcleos y máquinas (*Apache Spark* y *MongoDB*).
 
-Se creó una extensión de HyperOpt llamada **HyperOpt-Sklearn** que permite aplicar el procedimiento HyperOpt a la preparación de datos y los modelos de aprendizaje automático proporcionados por Scikit-Learn
+![Sampling](images/sampling.jpeg)
 
-![Texto alternativo](https://github.com/mgobbi289/DiploDatos/blob/main/AutoML/Imagenes/1_b1zNb0WFu5j-B01NROGDCQ.jpeg)
+Se creó una extensión de la librería llamada **HyperOpt-Sklearn** que permite aplicar el procedimiento a la preparación de datos y los modelos de aprendizaje automático proporcionados por *scikit-learn*.
 
-~~~
+![HyperOpt-Sklearn](images/sklearn.jpeg)
+
+#### Ejemplo de Código
+
+```python
 # define an objective function
 def objective(args):
     case, val = args
@@ -45,12 +51,10 @@ print best
 # -> {'a': 1, 'c2': 0.01420615366247227}
 print hyperopt.space_eval(space, best)
 # -> ('case 2', 0.01420615366247227}
-~~~
+```
 
+#### Referencias:
 
-Presentación:https://docs.google.com/presentation/d/1EG_cKrkJaAEv6h6SHR7VchyyDrqYoSVS_vSlev0Yio8/edit#slide=id.gc6f90357f_0_47
-
-Referencias:
 http://hyperopt.github.io/hyperopt/
 
 https://github.com/hyperopt/hyperopt
@@ -62,3 +66,4 @@ https://ichi.pro/es/introduccion-a-la-optimizacion-automatica-de-hiperparametros
 https://machinelearningmastery.com/hyperopt-for-automated-machine-learning-with-scikit-learn/
 
 https://proceedings.mlr.press/v28/bergstra13.html
+
