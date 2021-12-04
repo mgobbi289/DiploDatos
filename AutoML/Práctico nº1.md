@@ -52,8 +52,13 @@ Presentación:https://docs.google.com/presentation/d/1EG_cKrkJaAEv6h6SHR7VchyyDr
 
 Referencias:
 http://hyperopt.github.io/hyperopt/
+
 https://github.com/hyperopt/hyperopt
+
 https://ichi.pro/es/hyperopt-ajuste-de-hiperparametros-basado-en-optimizacion-bayesiana-140338828128041
+
 https://ichi.pro/es/introduccion-a-la-optimizacion-automatica-de-hiperparametros-con-hyperopt-247088534065241
+
 https://machinelearningmastery.com/hyperopt-for-automated-machine-learning-with-scikit-learn/
+
 https://proceedings.mlr.press/v28/bergstra13.html
