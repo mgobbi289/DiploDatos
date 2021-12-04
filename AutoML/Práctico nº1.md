@@ -13,9 +13,10 @@ HyperOpt toma la Optimización Bayesiana como premisa al realizar algunas variac
 Requiere 4 componentes esenciales para la optimización de los hiperparámetros: el **espacio de búsqueda** , la **función de pérdida** , el **algoritmo de optimización** y una **base de datos** para almacenar el historial.
 
 Permite escalar el procedimiento de optimización en **múltiples núcleos y múltiples máquinas** (Apache Spark y MongoDB)
-
+![Texto alternativo](https://github.com/mgobbi289/DiploDatos/blob/main/AutoML/Imagenes/1_ztfyT1QatezmRHx4Zjeq5g.jpeg)
 Se creó una extensión de HyperOpt llamada **HyperOpt-Sklearn** que permite aplicar el procedimiento HyperOpt a la preparación de datos y los modelos de aprendizaje automático proporcionados por Scikit-Learn
 ![Texto alternativo](https://github.com/mgobbi289/DiploDatos/blob/main/AutoML/Imagenes/1_b1zNb0WFu5j-B01NROGDCQ.jpeg)
+
 ~~~
 # define an objective function
 def objective(args):
