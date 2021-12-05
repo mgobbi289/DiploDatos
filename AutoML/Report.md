@@ -4,9 +4,9 @@
 
 **HyperOpt** es una librería de *Python* de código abierto, creada por **James Bergstra** en 2011.
 
-Su objetivo es optimizar **pipelines** de *machine learning*, incluyendo el preproceso de los datos, la selección del modelo, y los hiperparametros del mismo.
+Su objetivo es optimizar **pipelines** de *machine learning*, incluyendo el preproceso de los datos, la selección del modelo, y los hiperparámetros del mismo.
 
-Permite automatizar la búsqueda de los *hiperparámetros óptimos* de un modelo; basada en una **Optimización Bayesiana** y soportada por la metodología **SMBO** (*Sequential Model-Based Global Optimization*) adaptada para trabajar con diferentes algoritmos tales como *Árbol de Estimadores Parzen* (**TPE**), *Árbol de adaptación de Estimadores Parzen* (**ATPE**), y *Procesos Gaussianos* (**GP**).
+Permite automatizar la búsqueda de los *hiperparámetros óptimos* de un modelo; basada en una **Optimización Bayesiana** y soportada por la metodología **SMBO** (*Sequential Model-Based Global Optimization*) adaptada para trabajar con diferentes algoritmos tales como *Árbol de Estimadores Parzen* (**TPE**), *Árbol de Adaptación de Estimadores Parzen* (**ATPE**), y *Procesos Gaussianos* (**GP**).
 
 **HyperOpt** toma la **Optimización Bayesiana** como premisa al realizar algunas variaciones en el proceso de muestreo, la definición y reducción del espacio de búsqueda, y los algoritmos para maximizar el modelo de probabilidad.
 
